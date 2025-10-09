@@ -1,4 +1,3 @@
-const $ = window.$
 const sheetUrl = `https://docs.google.com/spreadsheets/d/1TL3vuE5755EJrA-0BbNbMTvCDm-t-MHiwbegwoZpe7Y/gviz/tq?tqx=out:json`;
 var allCards = []
 var artists = ['-', 'any art', 'no art']
