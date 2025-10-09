@@ -105,8 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 allowed = card.tags.split(" ").includes("K")
             }
             if (allowed) {
-                const hasArtist = typeof card.artist !== 'undefined'
-                allowed = artist === "-" || (hasArtist && artist === "any art") || (!hasArtist && artist === "no art") || card.artist === artist
+                allowed = artist === "-" || (card.artist && artist === "any art") || (!card.artist && artist === "no art") || card.artist === artist
             }
             if (allowed && value) {
                 switch (sign) {
