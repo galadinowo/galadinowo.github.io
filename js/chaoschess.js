@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 allCards = data.table.rows
             })
             .catch(error => {
-            console.error('Error fetching JSON:', error);
+                console.error('Error fetching JSON:', error);
             });
     }
     
@@ -140,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         getSheetData()
             .then(() => {
                 allCards.forEach((card) => {
+                    console.log(card);
                     const artist = card.artist
                     if (!artists.includes(artist) && artist && artist !== "ARTIST") {
                         artists.push(artist)
