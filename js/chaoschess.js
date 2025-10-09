@@ -174,6 +174,5 @@ document.addEventListener('DOMContentLoaded', () => {
             $searchContainer.append($class).append($search).append($rarity).append($value).append($valuesign).append($m).append($k).append($cardArt).append($count).append($sort)
             $('body').append($searchContainer)
             printCards();
-        })
-    });
+        });
 });
