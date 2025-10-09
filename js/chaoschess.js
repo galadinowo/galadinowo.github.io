@@ -1,5 +1,6 @@
 const sheetUrl = `https://docs.google.com/spreadsheets/d/1TL3vuE5755EJrA-0BbNbMTvCDm-t-MHiwbegwoZpe7Y/gviz/tq?tqx=out:json`;
 var allCards = []
+var properties = []
 var artists = ['-', 'any art', 'no art']
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -98,14 +99,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 allowed = rarity === "all rarities" || card.rarity === rarity
             }
             if (allowed && m) {
-                allowed = card[0].split(" ").includes("M")
+                allowed = card.tags.split(" ").includes("M")
             }
             if (allowed && k) {
-                allowed = card[0].split(" ").includes("K")
+                allowed = card.tags.split(" ").includes("K")
             }
             if (allowed) {
-                const hasArtist = typeof card[8] !== 'undefined'
-                allowed = artist === "-" || (hasArtist && artist === "any art") || (!hasArtist && artist === "no art") || card[8] === artist
+                const hasArtist = typeof card.artist !== 'undefined'
+                allowed = artist === "-" || (hasArtist && artist === "any art") || (!hasArtist && artist === "no art") || card.artist === artist
             }
             if (allowed && value) {
                 switch (sign) {
@@ -128,17 +129,27 @@ document.addEventListener('DOMContentLoaded', () => {
             data = JSON.parse(
                 data.replace(/(^\/\*O_o\*\/\ngoogle\.visualization\.Query\.setResponse\(|\);$)/g,'')
             );
+            console.log(data.table);
             allCards = data.table.rows
-        })
-        .then(() => {
+            data.table.cols.forEach((col) => properties.push(col.label));
+            allCards.forEach((card, i, arr) => {
+                var cardTransformed = {};
+                card.c.forEach((propObj, i) => {
+                    if (propObj !== null) {
+                        cardTransformed[properties[i]] = propObj.v
+                    } else {
+                        cardTransformed[properties[i]] = ""
+                    }
+                });
+                arr[i] = cardTransformed
+            });
             allCards.forEach((card) => {
-                console.log(card);
-                const artist = card.artist
-                if (!artists.includes(artist) && artist && artist !== "ARTIST") {
-                    artists.push(artist)
-                    window.artists = artists
+                if (!artists.includes(card.artist) && card.artist) {
+                    artists.push(card.artist)
                 }
             });
+        })
+        .then(() => {
             const $searchContainer = $('<div id="searchContainer"></div>')
             const $search = $('<input type="text" id="cardSearch" placeholder="search...">').on("input", function() {
                 printCards();
@@ -167,9 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const $cardArt = $('<select id="cardArt"></select>').on("input", function() {
                 printCards();
             });
-            $.each(artists, function (i, item) {
-                $cardArt.append($('<option>', { text: item }));
-            });
+                artists.forEach((artist) => {
+                    $cardArt.append($('<option>', { text: artist }));
+                });
             const $count = $('<span id="cardCount"></span>')
             $searchContainer.append($class).append($search).append($rarity).append($value).append($valuesign).append($m).append($k).append($cardArt).append($count).append($sort)
             $('body').append($searchContainer)
