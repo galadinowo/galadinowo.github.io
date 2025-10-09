@@ -4,20 +4,6 @@ var artists = ['-', 'any art', 'no art']
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    async function getSheetData() {
-        fetch(sheetUrl)
-            .then(response => response.text())
-            .then(data => {
-                data = JSON.parse(
-                    data.replace(/(^\/\*O_o\*\/\ngoogle\.visualization\.Query\.setResponse\(|\);$)/g,'')
-                );
-                allCards = data.table.rows
-            })
-            .catch(error => {
-                console.error('Error fetching JSON:', error);
-            });
-    }
-    
     function createCard(card) {
         const cardId = card.name.replaceAll("-", "").replaceAll(" ", "-").replaceAll(",", "").replaceAll("'", "").replaceAll("$", "").toLowerCase()
         const cardQuote = card.quote ? `"${card.quote}"` : ""
@@ -136,52 +122,58 @@ document.addEventListener('DOMContentLoaded', () => {
         $('#cardCount').html(`count: ${count} / ${allCards.length}`);
     }
     
-    $(function() {
-        getSheetData()
-            .then(() => {
-                allCards.forEach((card) => {
-                    console.log(card);
-                    const artist = card.artist
-                    if (!artists.includes(artist) && artist && artist !== "ARTIST") {
-                        artists.push(artist)
-                        window.artists = artists
-                    }
-                });
-                const $searchContainer = $('<div id="searchContainer"></div>')
-                const $search = $('<input type="text" id="cardSearch" placeholder="search...">').on("input", function() {
-                    printCards();
-                });
-                const $class = $('<select id="cardClass"> <option>all classes</option> <option>ITEM!</option> <option>EQUIP!</option> <option>EFFECT!</option> </select>').on("input", function() {
-                    printCards();
-                });
-                const $rarity = $('<select id="cardRarity"> <option>all rarities</option> <option>common</option> <option>rare</option> <option>epic</option> <option>superior</option> </select>').on("input", function() {
-                    printCards();
-                });
-                const $value = $('<input type="text" id="cardValue" placeholder="value...">').on("input", function() {
-                    printCards();
-                });
-                const $valuesign = $('<select id="cardValueSign"> <option>=</option> <option>></option> <option><</option></select>').on("input", function() {
-                    printCards();
-                });
-                const $sort = $('<select id="cardSort"> <option>alphabetical</option> <option>value</option> <option>reverse value</option> <option>random</option></select>').on("input", function() {
-                    printCards();
-                });
-                const $m = $('<label for="cardM">moves</label><input type="checkbox" id="cardM">').on("input", function() {
-                    printCards();
-                });
-                const $k = $('<label for="cardK">keepsakes</label><input type="checkbox" id="cardK">').on("input", function() {
-                    printCards();
-                });
-                const $cardArt = $('<select id="cardArt"></select>').on("input", function() {
-                    printCards();
-                });
-                $.each(artists, function (i, item) {
-                    $cardArt.append($('<option>', { text: item }));
-                });
-                const $count = $('<span id="cardCount"></span>')
-                $searchContainer.append($class).append($search).append($rarity).append($value).append($valuesign).append($m).append($k).append($cardArt).append($count).append($sort)
-                $('body').append($searchContainer)
+    fetch(sheetUrl)
+        .then(response => response.text())
+        .then(data => {
+            data = JSON.parse(
+                data.replace(/(^\/\*O_o\*\/\ngoogle\.visualization\.Query\.setResponse\(|\);$)/g,'')
+            );
+            allCards = data.table.rows
+        })
+        .then(() => {
+            allCards.forEach((card) => {
+                console.log(card);
+                const artist = card.artist
+                if (!artists.includes(artist) && artist && artist !== "ARTIST") {
+                    artists.push(artist)
+                    window.artists = artists
+                }
+            });
+            const $searchContainer = $('<div id="searchContainer"></div>')
+            const $search = $('<input type="text" id="cardSearch" placeholder="search...">').on("input", function() {
                 printCards();
-            })
+            });
+            const $class = $('<select id="cardClass"> <option>all classes</option> <option>ITEM!</option> <option>EQUIP!</option> <option>EFFECT!</option> </select>').on("input", function() {
+                printCards();
+            });
+            const $rarity = $('<select id="cardRarity"> <option>all rarities</option> <option>common</option> <option>rare</option> <option>epic</option> <option>superior</option> </select>').on("input", function() {
+                printCards();
+            });
+            const $value = $('<input type="text" id="cardValue" placeholder="value...">').on("input", function() {
+                printCards();
+            });
+            const $valuesign = $('<select id="cardValueSign"> <option>=</option> <option>></option> <option><</option></select>').on("input", function() {
+                printCards();
+            });
+            const $sort = $('<select id="cardSort"> <option>alphabetical</option> <option>value</option> <option>reverse value</option> <option>random</option></select>').on("input", function() {
+                printCards();
+            });
+            const $m = $('<label for="cardM">moves</label><input type="checkbox" id="cardM">').on("input", function() {
+                printCards();
+            });
+            const $k = $('<label for="cardK">keepsakes</label><input type="checkbox" id="cardK">').on("input", function() {
+                printCards();
+            });
+            const $cardArt = $('<select id="cardArt"></select>').on("input", function() {
+                printCards();
+            });
+            $.each(artists, function (i, item) {
+                $cardArt.append($('<option>', { text: item }));
+            });
+            const $count = $('<span id="cardCount"></span>')
+            $searchContainer.append($class).append($search).append($rarity).append($value).append($valuesign).append($m).append($k).append($cardArt).append($count).append($sort)
+            $('body').append($searchContainer)
+            printCards();
+        })
     });
 });
