@@ -23,6 +23,7 @@ input[type="checkbox"] { width: 30px; height: 30px; }
 .cardValue { position: absolute; top: 650px; left: 30px; text-align: right; font-size: 22px; width: 440px;}
 .outcomeGroup { display: flex; }
 .outcome { height: 100px; display: block; border: 2px solid var(--dark); align-content: center; padding: 0px 10px; font-size: 26px; width: 100%; text-align: center;}
+.thin .outcome { height: 80px; }
 .outcomeGroup:has(.orBox) .outcome { padding: 0px 20px; }
 .outcome:first-child:not(.outcomeGroup ~ .outcomeGroup .outcome) { border-top-left-radius: 10px;}
 .outcome:last-child:not(.outcomeGroup ~ .outcomeGroup .outcome) { border-top-right-radius: 10px;}
