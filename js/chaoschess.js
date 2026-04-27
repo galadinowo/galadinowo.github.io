@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .replaceAll("~", "</span><span class=\"aside\">")
             .replaceAll("(", "<span class=\"outcome\">")
             .replaceAll(")", "</span>")
+            .replaceAll("t[", "<span class=\"outcomeGroup thin\">")
             .replaceAll("[", "<span class=\"outcomeGroup\">")
             .replaceAll("]", "</span>")
             .replaceAll(">>", "<span class=\"squish\">")
