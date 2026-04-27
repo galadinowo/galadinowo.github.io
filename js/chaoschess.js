@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         var $card = $(`
         <div id="${cardId}" class="card ${card.rarity}">
             <div class="cardBg ${card.rarity}"></div>
-            <img class="cardImage ${breaking}" src="https://raw.githubusercontent.com/galadinowo/chaoschess/refs/heads/main/images/cards/${card.artStatus === 'FINISHED' ? cardId : 'placeholder'}.png">
+            <img class="cardImage ${breaking}" src="https://galadinowo.github.io/images/chaoschess/cards/${card.artStatus === 'FINISHED' ? cardId : 'placeholder'}.png">
             <div class="cardClass">${card.class}</div>
             <div class="cardName">${card.name}</div>
             <div class="cardDesc">${format(card.desc)}</div>
